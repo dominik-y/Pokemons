@@ -21,7 +21,6 @@ class ViewController: UIViewController, UITextFieldDelegate {
     
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
-        //searchButtonPressed(continueButton)
     }
     
     @objc func dismissKeyboard() {
@@ -45,9 +44,6 @@ class ViewController: UIViewController, UITextFieldDelegate {
     }
     
     @IBAction func continueButtonPressed(_ sender: UIButton) {
-        
         isItEmpty()
     }
 }
-
-// napraviti loader pri requestu 
