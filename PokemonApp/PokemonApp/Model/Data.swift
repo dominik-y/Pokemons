@@ -19,9 +19,9 @@ struct Pokemon: Decodable {
 }
 
 struct PokemonDetail: Codable {
-    let baseExperience: Int
+    let baseExperience: Int?
     let types: [TypeElement]
-    let weight: Int
+    let weight: Int?
 
     enum CodingKeys: String, CodingKey {
         case baseExperience = "base_experience"

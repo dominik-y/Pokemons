@@ -53,6 +53,7 @@ class TableViewController: UIViewController, UITableViewDataSource, UITableViewD
         let cell = tableView.dequeueReusableCell(withIdentifier: "listCell", for: indexPath)
         
         cell.textLabel?.text = repository.results[indexPath.row].name
+        
         cell.textLabel?.textAlignment = .center
         cell.contentView.layer.cornerRadius = 15
         
@@ -72,6 +73,7 @@ class TableViewController: UIViewController, UITableViewDataSource, UITableViewD
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
        if (segue.identifier == "segueToDetails") {
            guard let detailsViewController = segue.destination as? DetailsViewController else { return }
+           // OVDE SU PODATCI u objectu
            if let object = sender as? [String: String] {
                detailsViewController.url = object["url"] ?? ""
                detailsViewController.fetchData()
@@ -84,7 +86,7 @@ class TableViewController: UIViewController, UITableViewDataSource, UITableViewD
     }
     
     @IBAction func favoritesButtonTapped(_ sender: UIButton) {
-        self.present(FavoritesViewController(), animated: true, completion: nil)
+        performSegue(withIdentifier: "goToFavorites", sender: self)
     }
 }
 

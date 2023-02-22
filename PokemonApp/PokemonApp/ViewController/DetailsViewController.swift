@@ -8,7 +8,7 @@
 import UIKit
 
 class DetailsViewController: UIViewController {
-
+    
     @IBOutlet weak var baseExperienceLabel: UILabel!
     @IBOutlet weak var weightLabel: UILabel!
     
@@ -25,18 +25,36 @@ class DetailsViewController: UIViewController {
         fetchData()
     }
     
+    private func configureItems() {
+        self.navigationItem.leftBarButtonItem = UIBarButtonItem(barButtonSystemItem: .add, target: self, action: nil)
+    }
+    
     func fetchData() {
         Network.shared.getPokemonDetail(url: url, completion: { result in
             switch result {
             case .success(let details):
+    
+                guard let baseExperience = details.baseExperience else { return }
                 
-                self.baseExperienceLabel?.text = String(details.baseExperience)
-                self.weightLabel?.text = String(details.weight)
-
+//                DispatchQueue.main.async {
+//                    self.baseExperienceLabel.text = String(baseExperience)
+//                }
+//                
+//                self.baseExperienceLabel.text = String(baseExperience)
+//                self.weightLabel.text = String(details.weight)
+//
+//                print("---------------")
+//                print(self.baseExperienceLabel?.text as Any)
+//                print(self.weightLabel?.text as Any)
                 break
+                
             case .failure(let error):
                 print(error.localizedDescription)
             }
         })
+    }
+
+    @IBAction func backButton(_ sender: Any) {
+        self.dismiss(animated: true, completion: nil)
     }
 }
