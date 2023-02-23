@@ -6,10 +6,14 @@
 
 import UIKit
 import Alamofire
+import CoreData
 
 class ViewController: UIViewController, UITextFieldDelegate {
     
     @IBOutlet weak var inputTextField: UITextField!
+    
+    var username: String = ""
+    var user: [NSManagedObject] = []
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -33,6 +37,16 @@ class ViewController: UIViewController, UITextFieldDelegate {
             displayMyAlertMessage(userMessage: "")
         } else {
             performSegue(withIdentifier: "sequeToCells", sender: nil)
+        }
+        
+    }
+    
+    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+        guard let userInput = inputTextField.text else { return }
+        
+        if segue.destination is TableViewController {
+            let tableViewController = segue.destination as? TableViewController
+            tableViewController?.navigationTitle = userInput
         }
     }
     

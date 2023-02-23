@@ -22,10 +22,11 @@ struct PokemonDetail: Codable {
     let baseExperience: Int?
     let types: [TypeElement]
     let weight: Int?
+    let sprites: Sprites?
 
     enum CodingKeys: String, CodingKey {
         case baseExperience = "base_experience"
-        case types, weight
+        case types, weight, sprites
     }
 }
 
@@ -54,6 +55,20 @@ struct TypeElement: Codable {
     let slot: Int
     let type: Species
 }
+
+// MARK: - Sprites
+class Sprites: Codable {
+    let frontDefault: String?
+
+    enum CodingKeys: String, CodingKey {
+        case frontDefault = "front_default"
+    }
+
+    init(frontDefault: String) {
+        self.frontDefault = frontDefault
+    }
+}
+
 
 // MARK: - Encode/decode helpers
 

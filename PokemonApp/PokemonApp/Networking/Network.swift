@@ -61,4 +61,18 @@ struct Network {
             }
         }
     }
+    
+    func getPokemontImage(url: String, completion: @escaping(Result<Sprites ,AFError>) -> Void) {
+        
+        let request = AF.request(url)
+        request.responseDecodable(of: Sprites.self) { response in
+            switch response.result {
+            case .success(let pokemonImage):
+                completion(.success(pokemonImage))
+            case .failure(_):
+                guard let error = response.error else { return }
+                completion(.failure(error))
+            }
+        }
+    }
 }

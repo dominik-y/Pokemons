@@ -13,6 +13,8 @@ class TableViewController: UIViewController, UITableViewDataSource, UITableViewD
     @IBOutlet weak var tableView: UITableView!
     @IBOutlet weak var favoritesButton: UIBarButtonItem!
     
+    var navigationTitle: String = ""
+    
     var repository: Repository? = nil
     
     override func viewDidLoad() {
@@ -21,6 +23,7 @@ class TableViewController: UIViewController, UITableViewDataSource, UITableViewD
         tableView.dataSource = self
         tableView.separatorStyle = .none
         loadPokemonData()
+        navigationBar.topItem?.title = "Welcome \(navigationTitle)"
     }
     
     private func loadPokemonData() {
@@ -65,20 +68,29 @@ class TableViewController: UIViewController, UITableViewDataSource, UITableViewD
             return
         }
         
-        let selectedPokemonUrl = repository.results[indexPath.row].url
+        //        let vc = storyboard?.instantiateViewController(withIdentifier: "DetailsViewController") as? DetailsViewController
+        //        vc?.titleName = repository.results[indexPath.row].name
+        let pokemonName = repository.results[indexPath.row].name
         
-        performSegue(withIdentifier: "segueToDetails", sender: ["url": selectedPokemonUrl])
+        let selectedPokemonUrl = repository.results[indexPath.row].url
+        guard !pokemonName.isEmpty, !selectedPokemonUrl.isEmpty else { return }
+        performSegue(withIdentifier: "segueToDetails", sender: ["url": selectedPokemonUrl, "titleName": pokemonName])
     }
     
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-       if (segue.identifier == "segueToDetails") {
-           guard let detailsViewController = segue.destination as? DetailsViewController else { return }
-           // OVDE SU PODATCI u objectu
-           if let object = sender as? [String: String] {
-               detailsViewController.url = object["url"] ?? ""
-               detailsViewController.fetchData()
-           }
-       }
+        if (segue.identifier == "segueToDetails") {
+            guard let detailsViewController = segue.destination as? DetailsViewController else { return }
+            if let object = sender as? [String: String] {
+                
+                guard let url = object["url"],
+                      let pokemonName = object["titleName"] else {
+                    return
+                }
+                
+                detailsViewController.url = url
+                detailsViewController.titleName = pokemonName
+            }
+        }
     }
     
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
